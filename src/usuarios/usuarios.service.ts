@@ -1,40 +1,37 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { Usuario } from './usuario.entity';
+import{Usuario}from'./usuario.entity';
 
 @Injectable()
 export class UsuariosService {
 
-constructor(@InjectRepository(Usuario)private rep:Repository<Usuario>){
-    
-}
+    constructor(@InjectRepository(Usuario)private rep:Repository<Usuario>){
+             
+    }
 
-async obtenerUsuarios(usuario:Usuario):Promise<Usuario[]>{
-return await this.rep.find();    
+    async obtenerUsuarios(usuario:Usuario):Promise<Usuario[]>{
+    return await this.rep.find();
+    }
 
-}
-
-async obtenerUsuario(_id:number):Promise<Usuario[]>{
-return await this.rep.find({
+    async obtenerUsuario(_id:number): Promise<Usuario[]>{
+    return await this.rep.find({    
     select:["id","nombre","apellido"],
     where:[
-        {"id":_id}
-    ]
-
-});    
+    {"id":_id}
+    ]    
+});
 }
 
-async crearUsuario(usuario:Usuario){
-    await this.rep.insert(usuario);
-}
+    async createUsuario(usuario:Usuario){
+     await this.rep.insert(usuario);
+    }
 
-async actualizarUsuario(usuario:Usuario){
-    await this.rep.save(usuario);
-}
+    async  actualizarUsuario(usuario: Usuario){
+        await this.rep.update({id:usuario.id},usuario);
+    }
 
-async borrarUsuario(usuario:Usuario){
-    await this.rep.delete(usuario);
-}
-
+    async  borrarUsuario(usuario: Usuario){
+        await this.rep.delete(usuario);
+    }
 }
